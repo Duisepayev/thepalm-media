@@ -1,0 +1,25 @@
+{
+  "name": "The Palm massage & spa",
+  "domain": "https://thepalm.kz",
+  "phone": "+7 778 580 58 32",
+  "phone_href": "+77785805832",
+  "whatsapp": "77785805832",
+  "whatsapp_text": "Здравствуйте, пишу с сайта thepalm.kz.",
+  "address": "проспект Аль-Фараби 41/7, ЖК Metropole, блок 7, 1 этаж",
+  "address_short": "Аль-Фараби 41/7, ЖК Metropole, блок 7",
+  "address_hint": "угол Аль-Фараби и Сейфуллина",
+  "city": "Алматы",
+  "hours": "Круглосуточно, без выходных",
+  "geo": {"lat": 43.227731, "lon": 76.937659},
+  "email": "info@thepalm.kz",
+  "instagram": "https://www.instagram.com/thepalm.almaty/",
+  "tiktok": "https://www.tiktok.com/@thepalm.almaty",
+  "gtm_id": "GTM-W6TKHWH9",
+  "booking_enabled": false,
+  "booking_url": "",
+  "promos": [
+    {"title": "−10% по будням днём", "text": "С понедельника по пятницу с 10:00 до 17:00 скидка 10% на все программы."},
+    {"title": "−10% на первое посещение", "text": "Для новых гостей скидка 10% на любые процедуры."}
+  ],
+  "promo_note": "Скидки не суммируются."
+}

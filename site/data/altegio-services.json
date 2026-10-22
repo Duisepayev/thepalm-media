@@ -1,0 +1,287 @@
+{
+ "source": "Altegio location 1352802",
+ "synced_at": "2026-10-22",
+ "services": [
+  {
+   "id": 13436569,
+   "title": "Арома массаж мешочками 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13436570,
+   "title": "Арома массаж мешочками 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13436571,
+   "title": "Висцеральный массаж 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13436572,
+   "title": "Висцеральный массаж 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13436573,
+   "title": "Для двоих 60 минут",
+   "category_id": 13436546,
+   "price": 50000,
+   "price_max": 50000,
+   "active": true
+  },
+  {
+   "id": 13436574,
+   "title": "Для двоих 90 минут",
+   "category_id": 13436546,
+   "price": 70000,
+   "price_max": 70000,
+   "active": true
+  },
+  {
+   "id": 13436575,
+   "title": "Классический стандартный массаж 60 минут",
+   "category_id": 13436546,
+   "price": 22000,
+   "price_max": 22000,
+   "active": true
+  },
+  {
+   "id": 13436576,
+   "title": "Классический стандартный массаж 90 минут",
+   "category_id": 13436546,
+   "price": 32000,
+   "price_max": 32000,
+   "active": true
+  },
+  {
+   "id": 13436577,
+   "title": "Массаж банками 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13436578,
+   "title": "Массаж банками 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13436579,
+   "title": "Массаж в 4 руки 60 минут",
+   "category_id": 13436546,
+   "price": 60000,
+   "price_max": 60000,
+   "active": true
+  },
+  {
+   "id": 13436580,
+   "title": "Массаж в 4 руки 90 минут",
+   "category_id": 13436546,
+   "price": 80000,
+   "price_max": 80000,
+   "active": true
+  },
+  {
+   "id": 13436581,
+   "title": "Спортивный массаж 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13436582,
+   "title": "Спортивный массаж 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13436583,
+   "title": "Стоун массаж 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13436584,
+   "title": "Стоун массаж 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13436585,
+   "title": "Экспресс массаж",
+   "category_id": 13436546,
+   "price": 17000,
+   "price_max": 17000,
+   "active": true
+  },
+  {
+   "id": 13436595,
+   "title": "Балийский ритуал",
+   "category_id": 13436548,
+   "price": 75000,
+   "price_max": 75000,
+   "active": true
+  },
+  {
+   "id": 13436596,
+   "title": "Гармония двух сердец",
+   "category_id": 13436548,
+   "price": 65000,
+   "price_max": 65000,
+   "active": true
+  },
+  {
+   "id": 13436597,
+   "title": "Марокканская ночь",
+   "category_id": 13436548,
+   "price": 85000,
+   "price_max": 85000,
+   "active": true
+  },
+  {
+   "id": 13436598,
+   "title": "The Palm",
+   "category_id": 13436549,
+   "price": 85000,
+   "price_max": 85000,
+   "active": true
+  },
+  {
+   "id": 13436600,
+   "title": "Гармония",
+   "category_id": 13436549,
+   "price": 59000,
+   "price_max": 59000,
+   "active": true
+  },
+  {
+   "id": 13436601,
+   "title": "Для нее",
+   "category_id": 13436549,
+   "price": 55000,
+   "price_max": 55000,
+   "active": true
+  },
+  {
+   "id": 13436602,
+   "title": "Парение",
+   "category_id": 13436549,
+   "price": 12000,
+   "price_max": 12000,
+   "active": true
+  },
+  {
+   "id": 13436603,
+   "title": "Пилинг",
+   "category_id": 13436549,
+   "price": 15000,
+   "price_max": 15000,
+   "active": true
+  },
+  {
+   "id": 13436604,
+   "title": "Пробуждение",
+   "category_id": 13436549,
+   "price": 49000,
+   "price_max": 49000,
+   "active": true
+  },
+  {
+   "id": 13436605,
+   "title": "Скрабирование",
+   "category_id": 13436549,
+   "price": 15000,
+   "price_max": 15000,
+   "active": true
+  },
+  {
+   "id": 13692026,
+   "title": "Китайский точечный массаж 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  },
+  {
+   "id": 13692027,
+   "title": "Китайский точечный массаж 90 минут",
+   "category_id": 13436546,
+   "price": 37000,
+   "price_max": 37000,
+   "active": true
+  },
+  {
+   "id": 13692028,
+   "title": "Огненный массаж 60 минут",
+   "category_id": 13436546,
+   "price": 32000,
+   "price_max": 32000,
+   "active": true
+  },
+  {
+   "id": 13692029,
+   "title": "Огненный массаж 90 минут",
+   "category_id": 13436546,
+   "price": 42000,
+   "price_max": 42000,
+   "active": true
+  },
+  {
+   "id": 13692030,
+   "title": "Медовый массаж 60 минут",
+   "category_id": 13436546,
+   "price": 32000,
+   "price_max": 32000,
+   "active": true
+  },
+  {
+   "id": 13692031,
+   "title": "Медовый массаж 90 минут",
+   "category_id": 13385540,
+   "price": 42000,
+   "price_max": 42000,
+   "active": true
+  },
+  {
+   "id": 13692032,
+   "title": "Скульптурный массаж лица 30 минут",
+   "category_id": 13436546,
+   "price": 17000,
+   "price_max": 17000,
+   "active": true
+  },
+  {
+   "id": 13692033,
+   "title": "Скульптурный массаж лица 60 минут",
+   "category_id": 13436546,
+   "price": 27000,
+   "price_max": 27000,
+   "active": true
+  }
+ ],
+ "_note": "Только категории массажа, SPA-программ и ритуалов (13436546, 13436548, 13436549) + медовый 90 мин (лежит в другой категории)."
+}
