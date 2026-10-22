@@ -27,6 +27,7 @@ MASTERS = load("masters.json")["masters"]
 PROGRAMS_DATA = load("programs.json")
 PROGRAMS = PROGRAMS_DATA["programs"]
 ALTEGIO = {s["id"]: s for s in load("altegio-services.json")["services"]}
+BLOG = load("blog.json")["posts"]
 
 GROUPS = [
     ("massage", "Массаж"),
@@ -195,7 +196,7 @@ def layout(pg, title, description, body, image="reception.webp"):
     </div>
     <div>
       <h3>Разделы</h3>
-      <p><a href="{u('/programmy/')}">Цены и программы</a><br><a href="{u('/mastera/')}">Мастера</a><br><a href="{u('/contact/')}">Контакты</a></p>
+      <p><a href="{u('/programmy/')}">Цены и программы</a><br><a href="{u('/mastera/')}">Мастера</a><br><a href="{u('/blog/')}">Блог</a><br><a href="{u('/contact/')}">Контакты</a></p>
     </div>
     <div>
       <h3>Мы в соцсетях</h3>
@@ -326,7 +327,7 @@ def page_home():
     pg = Page("/")
     massage_cards = "".join(program_card(pg, by_slug(s)) for s in HOME_MASSAGE)
     spa_cards = "".join(spa_card(pg, p) for p in PROGRAMS if p["group"] == "spa")
-    masters = "".join(master_card(pg, m) for m in MASTERS[:4])
+    masters = "".join(master_card(pg, m) for m in MASTERS[:8])
     body = f"""
 <section class="hero">
   {img(pg, 'hero.webp', 'Вход в The Palm massage & spa', 'hero-bg', loading='eager', w=1080, h=730)}
@@ -344,6 +345,12 @@ def page_home():
   </div>
 </section>
 {promos_block()}
+<section class="section" id="mastera">
+  <div class="wrap">
+    <div class="section-head"><h2 class="h2">Наши мастера</h2><a class="link" href="{pg.url('/mastera/')}">Все мастера →</a></div>
+    <div class="masters">{masters}</div>
+  </div>
+</section>
 <section class="section" id="massazh">
   <div class="wrap">
     <div class="section-head"><h2 class="h2">Популярные массажи</h2><a class="link" href="{pg.url('/programmy/')}">Все цены →</a></div>
@@ -354,12 +361,6 @@ def page_home():
   <div class="wrap">
     <div class="section-head"><h2 class="h2">SPA-программы</h2><p class="muted">Массаж, парение, пилинг и уход в одном визите</p></div>
     <div class="spa-grid">{spa_cards}</div>
-  </div>
-</section>
-<section class="section">
-  <div class="wrap">
-    <div class="section-head"><h2 class="h2">Мастера</h2><a class="link" href="{pg.url('/mastera/')}">Все мастера →</a></div>
-    <div class="masters">{masters}</div>
   </div>
 </section>
 <section class="section comfort">
@@ -484,6 +485,51 @@ def page_404():
     return pg, layout(pg, "Страница не найдена — The Palm", "Страница не найдена.", body)
 
 
+MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
+
+
+def ru_date(iso):
+    y, m, d = iso.split("-")
+    return f"{int(d)} {MONTHS[int(m) - 1]} {y}"
+
+
+def page_blog():
+    pg = Page("/blog/")
+    items = "".join(f"""<a class="post-item" href="{pg.url('/' + p['slug'] + '/')}">
+  <span class="muted small">{ru_date(p['date'])}</span>
+  <h2>{e(p['title'])}</h2>
+  <p class="muted">{e(p['description'])}</p>
+</a>""" for p in BLOG)
+    body = f"""
+<section class="page-head"><div class="wrap narrow"><h1>Блог о массаже</h1>
+<p class="lead">Статьи о техниках массажа, пользе и противопоказаниях.</p></div></section>
+<section class="section"><div class="wrap narrow"><div class="post-list">{items}</div></div></section>
+"""
+    return pg, layout(pg, "Блог о массаже — The Palm massage & spa, Алматы",
+                      "Статьи о массаже: виды техник, польза, противопоказания, советы мастеров The Palm.", body)
+
+
+def page_post(p):
+    pg = Page(f"/{p['slug']}/")
+    content = p["html"].replace("<a data-wa>", f'<a href="{e(wa_link())}" target="_blank" rel="noopener" data-track="whatsapp_click" data-where="blog_inline">')
+    body = f"""
+<article class="section post">
+  <div class="wrap narrow">
+    <p class="crumbs"><a href="{pg.url('/')}">Главная</a> / <a href="{pg.url('/blog/')}">Блог</a></p>
+    <h1>{e(p['title'])}</h1>
+    <p class="muted small">{ru_date(p['date'])}</p>
+    <div class="prose">{content}</div>
+    <div class="post-cta">
+      <h2 class="h3">Записаться в The Palm</h2>
+      <p>Массаж и SPA в Алматы, круглосуточно. {e(S['address_short'])}.</p>
+      <div class="btn-row">{btn_wa(where="blog_post")}<a class="btn btn-outline" href="{pg.url('/programmy/')}">Цены и программы</a></div>
+    </div>
+  </div>
+</article>
+"""
+    return pg, layout(pg, f"{p['title']} — блог The Palm", p["description"], body)
+
+
 # ---------- сборка ----------
 
 def write(path, content):
@@ -501,6 +547,7 @@ def main():
     shutil.copytree(os.path.join(ROOT, "assets"), os.path.join(DIST, "assets"))
     pages = [page_home(), page_prices(), page_masters(), page_contacts(), page_404()]
     pages += [page_program(p) for p in PROGRAMS]
+    pages += [page_blog()] + [page_post(p) for p in BLOG]
     for pg, content in pages:
         write(pg.path, content)
 
@@ -511,6 +558,10 @@ def main():
             redirects.append(f"{old} /programmy/{p['slug']}/ 301")
             redirects.append(f"{old.rstrip('/')} /programmy/{p['slug']}/ 301")
     redirects += ["/product-category/* /programmy/ 301", "/shop/ /programmy/ 301"]
+    # Не перенесённые статьи и старые служебные страницы WordPress
+    for old in ["/body-massage/", "/spa-massage-almaty/", "/body-massage-almaty/", "/about-hotel/", "/massage-almaty/", "/refund_returns-2/"]:
+        redirects.append(f"{old} / 301")
+        redirects.append(f"{old.rstrip('/')} / 301")
     with open(os.path.join(DIST, "_redirects"), "w") as f:
         f.write("\n".join(redirects) + "\n")
 
