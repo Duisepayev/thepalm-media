@@ -1,0 +1,26 @@
+name: fetch-old-images
+on:
+  push:
+    branches: [claude/project-thread-oc35if]
+    paths: [".github/workflows/fetch-old-images.yml"]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download images from old WordPress site
+        run: |
+          mkdir -p site/old-images
+          for u in 2024/09/gemini_generated_image_gijkjdgijkjdgijk 2024/09/gemini_generated_image_8v8pxa8v8pxa8v8p 2024/09/gemini_generated_image_3ihbge3ihbge3ihb 2024/09/gemini_generated_image_txyvlhtxyvlhtxyv 2024/09/gemini_generated_image_41zm4841zm4841zm 2024/09/gemini_generated_image_v6fc02v6fc02v6fc 2024/09/gemini_generated_image_illggqillggqillg 2024/09/gemini_generated_image_88lp2o88lp2o88lp 2024/09/gemini_generated_image_qvh9y1qvh9y1qvh9 2024/09/gemini_generated_image_mk8bstmk8bstmk8b 2025/11/gemini_generated_image_qkn9b0qkn9b0qkn9 2024/09/gemini_generated_image_ci5iznci5iznci5i 2025/11/gemini_generated_image_as1fljas1fljas1f 2025/11/gemini_generated_image_4xykrp4xykrp4xyk 2025/11/gemini_generated_image_oquchkoquchkoquc 2025/11/gemini_generated_image_a9nkhla9nkhla9nk 2025/11/gemini_generated_image_jiejx7jiejx7jiej 2025/11/gemini_generated_image_oepz8toepz8toepz 2024/09/gemini_generated_image_q6mqmbq6mqmbq6mq; do
+            curl -sSfL -A "Mozilla/5.0" -o "site/old-images/$(basename $u).png" "https://thepalm.kz/wp-content/uploads/$u.png" || echo "FAIL $u"
+          done
+          ls -la site/old-images
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/old-images
+          git commit -m "Fetch program images from old site" || echo "nothing to commit"
+          git push
