@@ -301,7 +301,10 @@ def faq():
 def contacts_block(pg, heading="Как нас найти"):
     lat, lon = S["geo"]["lat"], S["geo"]["lon"]
     gmaps = f"https://www.google.com/maps/dir/?api=1&destination={lat},{lon}"
-    gis = f"https://2gis.kz/almaty/geo/{lon},{lat}"
+    gis = f"https://2gis.kz/almaty/firm/{S['twogis_firm_id']}"
+    gis_opts = json.dumps({"pos": {"lat": lat, "lon": lon, "zoom": 16}, "opt": {"city": "almaty"},
+                           "org": S["twogis_firm_id"]}, separators=(",", ":"))
+    gis_widget = "https://widgets.2gis.com/widget?type=firmsonmap&options=" + quote(gis_opts)
     return f"""<section class="section contacts" id="kontakty">
   <div class="wrap contacts-grid">
     <div>
@@ -313,7 +316,7 @@ def contacts_block(pg, heading="Как нас найти"):
       <p class="route-links"><a href="{gmaps}" target="_blank" rel="noopener" data-track="route_click" data-where="google_maps">Маршрут в Google Maps</a>
       <a href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis">Открыть в 2ГИС</a></p>
     </div>
-    <div class="map"><iframe title="The Palm на карте" loading="lazy" src="https://maps.google.com/maps?q={lat},{lon}&z=16&hl=ru&output=embed"></iframe></div>
+    <div class="map"><iframe title="The Palm на карте 2ГИС" loading="lazy" src="{e(gis_widget)}"></iframe></div>
   </div>
 </section>"""
 
