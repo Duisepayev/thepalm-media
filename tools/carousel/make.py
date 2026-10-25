@@ -127,11 +127,12 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     jobs = []
     for c in data:
+        c['images'] = [f"{c['slug']}-{i:02d}.jpg" for i in range(1, len(c['slides']) + 1)]
         if only and c['slug'] not in only:
             continue
         tmp = tempfile.mkdtemp()
         shutil.copy(os.path.join(here, 'icon.png'), tmp)
-        c['images'] = render(c, tmp)
+        render(c, tmp)
         jobs.append((c, tmp))
     pages = [(f'{tmp}/s{i}.html', f'{tmp}/s{i}.png') for c, tmp in jobs for i in range(1, len(c['slides']) + 1)]
     js = ("const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();"
