@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;background:#2b1d14;position:relative;overflow:hidden;font-family:Inter,sans-serif}
+.photo{position:absolute;left:0;top:0;width:1080px;height:900px;background:url(photo.jpg) center top/cover}
+.vig{position:absolute;left:0;top:0;width:700px;height:330px;background:radial-gradient(ellipse at 0% 0%,rgba(43,29,20,.6) 0%,rgba(43,29,20,.3) 45%,rgba(43,29,20,0) 75%)}
+.shade{position:absolute;left:0;top:0;width:1080px;height:901px;background:linear-gradient(180deg,rgba(43,29,20,.35) 0%,rgba(43,29,20,0) 22%,rgba(43,29,20,0) 55%,rgba(43,29,20,.55) 80%,#2b1d14 100%)}
+.logo{position:absolute;left:64px;top:55px;display:flex;align-items:flex-start;gap:12px}
+.logo img{height:62px;margin-top:2px}
+.lm{font-family:Lora,serif;font-size:37px;color:#f6efe4;line-height:1;margin-top:4px}
+.ls{font-size:14.5px;letter-spacing:4.6px;color:#c9a46a;margin-top:9px}
+.role{position:absolute;left:64px;top:900px;font-size:21px;letter-spacing:7px;color:#c8ac85;font-weight:500}
+.name{position:absolute;left:62px;top:935px;font-family:Lora,serif;font-size:118px;color:#fbf4ea;line-height:1.1}
+.pill{position:absolute;left:64px;top:1077px;height:51px;padding:0 26px;border:1.5px solid #b08a55;border-radius:26px;color:#e3c597;font-size:23px;line-height:48px}
+.line{position:absolute;left:64px;top:1157px;width:90px;height:2px;background:#c1a16e}
+ul{position:absolute;left:64px;top:1183px;width:960px;list-style:none;display:grid;grid-template-columns:491px 1fr;row-gap:20px}
+li{font-size:25.5px;color:#efe5d6;padding-left:25px;position:relative;line-height:33px}
+li:before{content:"";position:absolute;left:0;top:13px;width:9px;height:9px;border-radius:50%;background:#d2a262}
+</style></head><body>
+<div class="photo"></div><div class="shade"></div><div class="vig"></div>
+<div class="logo"><img src="icon.png"><div><div class="lm">The Palm</div><div class="ls">MASSAGE &amp; SPA</div></div></div>
+<div class="role">МАСТЕР МАССАЖА</div>
+<div class="name">{{NAME}}</div>
+<div class="pill">Опыт: {{EXP}}</div>
+<div class="line"></div>
+<ul>{{ITEMS}}</ul>
+</body></html>
