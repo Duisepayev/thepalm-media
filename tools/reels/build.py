@@ -18,6 +18,11 @@ def run(*a):
     subprocess.run(a, check=True)
 
 
+def duration(path):
+    return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+                                          '-of', 'csv=p=0', path]).decode())
+
+
 def caption_png(text, path):
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -58,6 +63,15 @@ def main():
     plan = json.load(open(plan_path, encoding='utf-8'))
     base = os.path.dirname(os.path.abspath(plan_path))
     host = os.path.join(base, plan['host'])
+    # кадр ведущей должен стоять там же, где звучит её голос, иначе губы не совпадут
+    t = 0
+    for s in plan['segments']:
+        if s['src'] == 'host' and abs(s['start'] - t) > 0.05:
+            sys.exit(f'ведущая с {s["start"]} с стоит на {t:.2f} с: губы разойдутся с голосом')
+        src = host if s['src'] == 'host' else os.path.join(base, s['src'])
+        if s['start'] + s['dur'] > duration(src) + 0.01:
+            sys.exit(f'{s["src"]}: {s["start"]}+{s["dur"]} с длиннее самого клипа, ролик укоротится')
+        t += s['dur']
     tmp = tempfile.mkdtemp()
     parts = []
     for i, s in enumerate(plan['segments']):
@@ -93,8 +107,7 @@ def main():
     audio = '1:a'
     if plan.get('music'):
         # музыка фоном под голос: тихо, по кругу, затухает в последние 1,5 с
-        dur = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
-                                             '-of', 'csv=p=0', host]).decode())
+        dur = duration(host)
         inputs += ['-stream_loop', '-1', '-ss', str(plan.get('music_start', 0)), '-i', os.path.join(base, plan['music'])]
         vol = plan.get('music_vol', 0.12)
         chain.append(f"[{n}:a]volume={vol},afade=t=in:d=0.5,afade=t=out:st={dur - 1.5}:d=1.5[mus]")
