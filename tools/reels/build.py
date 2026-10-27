@@ -97,7 +97,7 @@ def main():
     for j, (t0, t1, text) in enumerate(plan['captions']):
         caption_png(text, f'{tmp}/c{j}.png')
         inputs += ['-i', f'{tmp}/c{j}.png']
-        chain.append(f"[{last}][{n}:v]overlay=0:0:enable='between(t,{t0},{t1})'[o{j}]")
+        chain.append(f"[{last}][{n}:v]overlay=0:0:enable='gte(t,{t0})*lt(t,{t1})'[o{j}]")
         last, n = f'o{j}', n + 1
     if plan.get('ai_label'):
         label_png(f'{tmp}/ai.png')
