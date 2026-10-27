@@ -62,8 +62,13 @@ def main():
     for i, s in enumerate(plan['segments']):
         src = host if s['src'] == 'host' else os.path.join(base, s['src'])
         p = f'{tmp}/s{i}.mp4'
+        # zoom > 1 приближает кадр, y — где резать по вертикали (0 верх, 0.5 центр)
+        z, y = s.get('zoom', 1), s.get('y', 0.5)
+        fit = f'scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}'
+        if z != 1:
+            fit += f',scale={round(W * z)}:{round(H * z)},crop={W}:{H}:(iw-{W})/2:(ih-{H})*{y}'
         run('ffmpeg', '-v', 'error', '-ss', str(s['start']), '-t', str(s['dur']), '-i', src, '-an',
-            '-vf', f'scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1',
+            '-vf', f'{fit},fps={FPS},setsar=1',
             '-c:v', 'libx264', '-preset', 'fast', '-crf', '18', '-pix_fmt', 'yuv420p', '-y', p)
         parts.append(p)
     with open(f'{tmp}/list.txt', 'w') as f:
