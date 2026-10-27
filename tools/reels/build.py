@@ -67,6 +67,8 @@ def main():
         fit = f'scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}'
         if z != 1:
             fit += f',scale={round(W * z)}:{round(H * z)},crop={W}:{H}:(iw-{W})/2:(ih-{H})*{y}'
+        if s.get('vf'):
+            fit += ',' + s['vf']
         run('ffmpeg', '-v', 'error', '-ss', str(s['start']), '-t', str(s['dur']), '-i', src, '-an',
             '-vf', f'{fit},fps={FPS},setsar=1',
             '-c:v', 'libx264', '-preset', 'fast', '-crf', '18', '-pix_fmt', 'yuv420p', '-y', p)
