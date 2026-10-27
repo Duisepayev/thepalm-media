@@ -2,7 +2,8 @@
 
 python3 tools/reels/build.py plan.json out.mp4
 plan.json: {"host": "диана.mp4", "segments": [{"src": "host"|"файл", "start": c, "dur": c}],
-            "captions": [[t0, t1, "текст"]], "ai_label": true}
+            "captions": [[t0, t1, "текст"]], "ai_label": true,
+            "music": "трек.mp3", "music_vol": 0.12}
 Звук всегда целиком из host, видео по сегментам подряд. Титры рисуются Pillow (Inter Bold).
 """
 import json, os, subprocess, sys, tempfile
@@ -89,7 +90,17 @@ def main():
         inputs += ['-i', f'{tmp}/ai.png']
         chain.append(f'[{last}][{n}:v]overlay=0:0[oai]')
         last = 'oai'
-    run('ffmpeg', '-v', 'error', *inputs, '-filter_complex', ';'.join(chain), '-map', f'[{last}]', '-map', '1:a',
+    audio = '1:a'
+    if plan.get('music'):
+        # музыка фоном под голос: тихо, по кругу, затухает в последние 1,5 с
+        dur = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+                                             '-of', 'csv=p=0', host]).decode())
+        inputs += ['-stream_loop', '-1', '-i', os.path.join(base, plan['music'])]
+        vol = plan.get('music_vol', 0.12)
+        chain.append(f"[{n}:a]volume={vol},afade=t=in:d=0.5,afade=t=out:st={dur - 1.5}:d=1.5[mus]")
+        chain.append('[1:a][mus]amix=inputs=2:duration=first:normalize=0[aout]')
+        audio = '[aout]'
+    run('ffmpeg', '-v', 'error', *inputs, '-filter_complex', ';'.join(chain), '-map', f'[{last}]', '-map', audio,
         '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k',
         '-shortest', '-movflags', '+faststart', '-y', out)
     print(out)
