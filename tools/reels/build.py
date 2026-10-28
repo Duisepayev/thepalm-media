@@ -73,7 +73,7 @@ def main():
             sys.exit(f'{s["src"]}: {s["start"]}+{s["dur"]} с длиннее самого клипа, ролик укоротится')
         t += s['dur']
     tmp = tempfile.mkdtemp()
-    parts = []
+    parts, t = [], 0
     for i, s in enumerate(plan['segments']):
         src = host if s['src'] == 'host' else os.path.join(base, s['src'])
         p = f'{tmp}/s{i}.mp4'
@@ -84,7 +84,10 @@ def main():
             fit += f',scale={round(W * z)}:{round(H * z)},crop={W}:{H}:(iw-{W})/2:(ih-{H})*{y}'
         if s.get('vf'):
             fit += ',' + s['vf']
-        run('ffmpeg', '-v', 'error', '-ss', str(s['start']), '-t', str(s['dur']), '-i', src, '-an',
+        # число кадров от общей шкалы, иначе округления копятся и картинка отстаёт от голоса
+        frames = round((t + s['dur']) * FPS) - round(t * FPS)
+        t += s['dur']
+        run('ffmpeg', '-v', 'error', '-ss', str(s['start']), '-i', src, '-an', '-frames:v', str(frames),
             '-vf', f'{fit},fps={FPS},setsar=1',
             '-c:v', 'libx264', '-preset', 'fast', '-crf', '18', '-pix_fmt', 'yuv420p', '-y', p)
         parts.append(p)
