@@ -1,0 +1,119 @@
+{
+ "music_start": 120,
+ "parts": [
+  {
+   "name": "e3d1",
+   "say": [
+    "Начальник сказал Абылаю: проект на тебе."
+   ],
+   "caps": [
+    "«Проект на тебе». Серия 3"
+   ],
+   "show": [
+    "host"
+   ]
+  },
+  {
+   "name": "e3e1",
+   "say": [
+    "Три ночи не сплю. Даже в душе думаю о дедлайне."
+   ],
+   "caps": [
+    "«Даже в душе думаю о дедлайне»"
+   ],
+   "show": [
+    "host"
+   ]
+  },
+  {
+   "name": "e3d2",
+   "say": [
+    "Стресс не выговоришь, его надо растопить.",
+    "Сначала огненный массаж: горячие полотенца прогревают спину.",
+    "Потом горячие камни вдоль позвоночника, и плечи сами опускаются."
+   ],
+   "caps": [
+    "Стресс надо растопить",
+    "Огненный массаж",
+    "Горячие камни"
+   ],
+   "show": [
+    [
+     {
+      "src": "p9181.mov",
+      "at": 4
+     },
+     {
+      "src": "p9189.mov",
+      "at": 9
+     }
+    ],
+    [
+     {
+      "src": "u2.mov",
+      "at": 2.0,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     },
+     {
+      "src": "u2.mov",
+      "at": 8.6,
+      "zoom": 1.2,
+      "y": 0,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     },
+     {
+      "src": "u2.mov",
+      "at": 10.0,
+      "zoom": 1.2,
+      "y": 0,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     }
+    ],
+    [
+     {
+      "src": "stone.mov",
+      "at": 8.5,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     },
+     {
+      "src": "s9858.mov",
+      "at": 16,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     },
+     {
+      "src": "stone.mov",
+      "at": 12.8,
+      "vf": "colortemperature=temperature=8500:mix=0.8,eq=saturation=0.8"
+     }
+    ]
+   ]
+  },
+  {
+   "name": "e3e2",
+   "say": [
+    "Кажется... я справлюсь."
+   ],
+   "caps": [
+    "«Кажется, я справлюсь»"
+   ],
+   "show": [
+    "host"
+   ]
+  },
+  {
+   "name": "e3d3",
+   "say": [
+    "Днём справился.",
+    "А ночью лежал и смотрел в потолок."
+   ],
+   "caps": [
+    "Днём справился",
+    "Продолжение следует: серия 4"
+   ],
+   "show": [
+    "host",
+    "host"
+   ]
+  }
+ ]
+}
