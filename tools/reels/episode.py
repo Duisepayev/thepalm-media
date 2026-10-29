@@ -36,7 +36,7 @@ for p in spec['parts']:
         caps.append([round(t0, 3), round(t1, 3), p['caps'][i]])
         show = p['show'][i]
         if show == 'host':
-            segs.append({'src': 'host', 'start': round(t0, 3), 'dur': round(t1 - t0, 3), 'zoom': 1.3, 'y': 0.1})
+            segs.append({'src': 'host', 'start': round(t0, 3), 'dur': round(t1 - t0, 3), 'zoom': p.get('zoom',1.3), 'y': p.get('y',0.1)})
         else:
             n = len(show); d = (t1 - t0) / n
             for c in show:
