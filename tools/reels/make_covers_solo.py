@@ -16,3 +16,6 @@ cover(11,'c2daba58','3 часа ночи, не уснуть.','Массаж го
 s=Image.new('RGB',(720,640))
 for i,k in enumerate((10,11)): s.paste(Image.open(R+f'abylai-ep{k}-cover.jpg').resize((360,640)),(360*i,0))
 s.save('csheet.jpg')
+cover(12,'70af2099','Шею заклинило.','Массаж шеи и плеч',0,R+'abylai-ep12-cover.jpg')
+cover(13,'50a3fa2c','3 упражнения','для шеи в самолёте',0,R+'abylai-ep13-cover.jpg')
+cover(14,'eba937bf','Из аэропорта к нам.','Сауна и массаж',0,R+'abylai-ep14-cover.jpg')
