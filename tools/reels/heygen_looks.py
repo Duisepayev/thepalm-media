@@ -8,14 +8,14 @@ def api(p,b=None):
     try: return json.load(urllib.request.urlopen(r))
     except urllib.error.HTTPError as e: raise SystemExit(e.read().decode())
 def gen(job):
-    name,who,text=job
+    name,who,text=job[:3]; vv=job[3] if len(job)>3 else AVOICE
     if who=='D':
         vi={'character':{'type':'talking_photo','talking_photo_id':DIANA[0],'use_avatar_iv_model':True,'matting':True},
             'voice':{'type':'text','voice_id':DIANA[1],'input_text':text,'speed':1.1},
             'background':{'type':'image','url':RAW+'bg-reception.jpg'}}
     else:
         vi={'character':{'type':'talking_photo','talking_photo_id':who,'use_avatar_iv_model':True},
-            'voice':{'type':'text','voice_id':AVOICE,'input_text':text,'speed':1.0}}
+            'voice':{'type':'text','voice_id':vv,'input_text':text,'speed':1.0}}
     vid=api('/v2/video/generate',{'video_inputs':[vi],'dimension':{'width':1080,'height':1920},'title':name})['data']['video_id']
     for _ in range(120):
         d=api(f'/v1/video_status.get?video_id={vid}')['data']
