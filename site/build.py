@@ -330,7 +330,7 @@ def page_home():
     pg = Page("/")
     massage_cards = "".join(program_card(pg, by_slug(s)) for s in HOME_MASSAGE)
     spa_cards = "".join(spa_card(pg, p) for p in PROGRAMS if p["group"] == "spa")
-    masters = "".join(master_card(pg, m) for m in MASTERS[:8])
+    masters = "".join(master_card(pg, m) for m in MASTERS)
     body = f"""
 <section class="hero">
   {img(pg, 'hero.webp', 'Вход в The Palm massage & spa', 'hero-bg', loading='eager', w=1080, h=730)}
