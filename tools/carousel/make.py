@@ -5,7 +5,7 @@ python3 tools/carousel/make.py carousels.json [slug ...]
 images/carousels/<slug>-NN.jpg и записывает список файлов в поле images.
 Типы слайдов: cover, text, list, steps, offer, cta. Фото — из site/assets/img.
 """
-import html, json, os, subprocess, sys, tempfile, shutil
+import html, json, os, re, subprocess, sys, tempfile, shutil
 from PIL import Image, ImageFilter
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -48,6 +48,8 @@ ol li:before{counter-increment:n;content:counter(n);width:74px;height:74px;top:-
 .pr b{font-family:Lora,serif;font-weight:400;font-size:44px;color:#e3c597;white-space:nowrap;margin-left:30px}
 .note{font-size:25px;line-height:1.45;color:#c8ac85;margin-top:28px}
 .pill{display:inline-block;padding:0 28px;height:58px;line-height:55px;border:1.5px solid #b08a55;border-radius:30px;color:#e3c597;font-size:27px;margin:0 14px 18px 0}
+.hook em{font-style:italic;color:#e8bd7c}
+.badge{display:inline-block;padding:0 30px;height:70px;line-height:70px;border-radius:36px;background:#c8954f;color:#2b1d14;font-size:34px;font-weight:500;letter-spacing:1px}
 .foot{font-size:28px;line-height:1.6;color:#efe5d6}
 """
 LOGO = ('<div class="logo"><img src="icon.png"><div><div class="lm">The Palm</div>'
@@ -68,10 +70,14 @@ def slide(s, i, n, tmp):
     if t == 'cover':
         photo(s['photo'], 1080, 1350, os.path.join(tmp, f'p{i}.jpg'))
         size = s.get('size', 104)
+        # *слово* в заголовке подсвечивается золотом, badge — плашка над заголовком
+        title = re.sub(r'\*(.+?)\*', r'<em>\1</em>', e(s['title']))
+        top = (f'<div class="badge">{e(s["badge"])}</div>' if s.get('badge')
+               else f'<div class="kicker">{e(s.get("kicker", ""))}</div>')
         return ('dark', f"""<div class="photo" style="height:1350px;background-image:url(p{i}.jpg)"></div>
-<div class="photo" style="height:1350px;background:linear-gradient(180deg,rgba(43,29,20,.55) 0%,rgba(43,29,20,.05) 25%,rgba(43,29,20,.25) 45%,rgba(43,29,20,.92) 72%,#2b1d14 100%)"></div>
-{LOGO}<div class="box" style="bottom:150px"><div class="kicker">{e(s.get('kicker', ''))}</div>
-<h1 style="font-size:{size}px;margin-top:26px;color:#fbf4ea">{e(s['title'])}</h1>
+<div class="photo" style="height:1350px;background:linear-gradient(180deg,rgba(43,29,20,.55) 0%,rgba(43,29,20,.05) 22%,rgba(43,29,20,.35) 40%,rgba(43,29,20,.94) 64%,#2b1d14 100%)"></div>
+{LOGO}<div class="box" style="bottom:150px">{top}
+<h1 class="hook" style="font-size:{size}px;margin-top:26px;color:#fbf4ea">{title}</h1>
 <div class="body" style="margin-top:30px;color:#e9dccb">{e(s.get('sub', ''))}</div></div>
 <div class="swipe">ЛИСТАЙТЕ →</div>""")
     if t in ('text', 'list', 'steps'):
