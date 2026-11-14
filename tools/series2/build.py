@@ -27,6 +27,23 @@ def sub_png(name,text,top=None,tag=None,size=40):
         f=ImageFont.truetype(FM,26); tw=d.textlength(tag,font=f)
         d.text((W-tw-36,44),tag,font=f,fill=(255,255,255,220))
     im.save(name)
+def endpng(name):
+    from PIL import ImageFilter
+    im=Image.new('RGBA',(W,H),(0,0,0,0)); d=ImageDraw.Draw(im)
+    SER='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf'
+    def c(t,y,f,col,glow=None):
+        tw=d.textlength(t,font=f); x=(W-tw)/2
+        if glow:
+            l=Image.new('RGBA',(W,H),(0,0,0,0)); ImageDraw.Draw(l).text((x,y),t,font=f,fill=glow)
+            l=l.filter(ImageFilter.GaussianBlur(12)); im.alpha_composite(l)
+        d.text((x,y),t,font=f,fill=col)
+    c('Кто он?',150,ImageFont.truetype(SER,110),(250,236,205,255),(230,190,110,255))
+    c('Смотрите завтра в 22:00',300,ImageFont.truetype(FB,42),(214,180,110,255))
+    band=Image.new('RGBA',(W,300),(8,20,15,200)); im.alpha_composite(band,(0,H-300))
+    c('The Palm · 24/7',H-260,ImageFont.truetype(FB,40),(251,244,234,255))
+    c('Запись в WhatsApp',H-200,ImageFont.truetype(FM,32),(230,220,200,255))
+    c('+7 778 580 58 32',H-150,ImageFont.truetype(FB,44),(214,180,110,255))
+    im.save(name)
 def card(name):
     im=Image.new('RGB',(W,H),(18,40,30)); d=ImageDraw.Draw(im)
     def c(t,y,f,col=(251,244,234)):
@@ -41,15 +58,16 @@ def card(name):
 SEQ=json.load(open('seq.json'))
 parts=[]
 for i,s in enumerate(SEQ):
-    png=f'o{i}.png'; sub_png(png,s.get('sub'),s.get('top'),'The Palm · «Смена»')
-    out=f'p{i}.mp4'; vf=f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps=30,setsar=1[v];[v][1:v]overlay=0:0[o]"
+    png=f'o{i}.png'; sub_png(png,s.get('sub'),s.get('top'),None)
+    out=f'p{i}.mp4'; pad=',tpad=start_mode=clone:start_duration=0.5' if i==0 else ''
+    vf=f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps=30,setsar=1{pad}[v];[v][1:v]overlay=0:0[o]"
     vol=s.get('vol',1.0)
-    cmd=['ffmpeg','-loglevel','error','-y','-i',s['clip'],'-i',png,'-filter_complex',vf+f";[0:a]volume={vol},aresample=48000,aformat=channel_layouts=stereo[a]",'-map','[o]','-map','[a]']
+    cmd=['ffmpeg','-loglevel','error','-y','-i',s['clip'],'-i',png,'-filter_complex',vf+f";[0:a]volume={vol},aresample=48000,aformat=channel_layouts=stereo{',adelay=500:all=1' if i==0 else ''}[a]",'-map','[o]','-map','[a]']
     if s.get('dur'): cmd+=['-t',str(s['dur'])]
     cmd+=['-c:v','libx264','-pix_fmt','yuv420p','-crf','20','-c:a','aac','-b:a','160k',out]
     subprocess.run(cmd,check=True); parts.append(out)
-card('card.png')
-subprocess.run(['ffmpeg','-loglevel','error','-y','-loop','1','-t','3.5','-i','card.png','-f','lavfi','-t','3.5','-i','anullsrc=r=48000:cl=stereo','-vf','fps=30,format=yuv420p','-c:v','libx264','-c:a','aac','-shortest','pcard.mp4'],check=True)
+endpng('end.png')
+subprocess.run(['ffmpeg','-loglevel','error','-y','-i','end.mp4','-loop','1','-i','end.png','-filter_complex',f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps=30,setsar=1,tpad=stop_mode=clone:stop_duration=1.5[v];[1:v]format=rgba,fade=t=in:st=1.2:d=0.8:alpha=1[t];[v][t]overlay=0:0:shortest=1[o];[0:a]volume=0.5,aresample=48000,aformat=channel_layouts=stereo,apad[a]",'-map','[o]','-map','[a]','-t','6.5','-c:v','libx264','-pix_fmt','yuv420p','-crf','20','-c:a','aac','-b:a','160k','pcard.mp4'],check=True)
 parts.append('pcard.mp4')
 open('list.txt','w').write(''.join(f"file '{p}'\n" for p in parts))
 subprocess.run(['ffmpeg','-loglevel','error','-y','-f','concat','-safe','0','-i','list.txt','-c','copy','raw.mp4'],check=True)
