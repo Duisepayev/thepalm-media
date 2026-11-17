@@ -16,8 +16,8 @@
   "instagram": "https://www.instagram.com/thepalm.almaty/",
   "tiktok": "https://www.tiktok.com/@thepalm.almaty",
   "gtm_id": "GTM-W6TKHWH9",
-  "booking_enabled": false,
-  "booking_url": "",
+  "booking_enabled": true,
+  "booking_url": "https://n1421891.alteg.io/",
   "promos": [
     {"title": "−10% по будням днём", "text": "С понедельника по пятницу с 10:00 до 17:00 скидка 10% на все программы."},
     {"title": "−10% на первое посещение", "text": "Для новых гостей скидка 10% на любые процедуры."}

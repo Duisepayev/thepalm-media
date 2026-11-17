@@ -101,6 +101,17 @@ def btn_call(label="Позвонить", where="", cls="btn btn-ghost"):
             f'{ICON_PHONE}<span>{e(label)}</span></a>')
 
 
+ICON_CAL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm12 7v10H5V9h14Zm-9 3H7v3h3v-3Z"/></svg>'
+
+
+def btn_online(where=""):
+    """Небольшая ссылка на онлайн-запись Altegio. Главная кнопка остаётся WhatsApp."""
+    if not S.get("booking_url"):
+        return ""
+    return (f'<a class="btn-online" href="{e(S["booking_url"])}" target="_blank" rel="noopener" '
+            f'data-track="online_booking_click" data-where="{e(where)}">{ICON_CAL}<span>Выбрать время онлайн</span></a>')
+
+
 def jsonld():
     data = {
         "@context": "https://schema.org",
@@ -312,7 +323,7 @@ def contacts_block(pg, heading="Как нас найти"):
       <p class="lead">{e(S['address'])}<br><span class="muted">{e(S['address_hint'])}</span></p>
       <p><strong>{e(S['hours'])}</strong></p>
       <p><a href="tel:{S['phone_href']}" data-track="phone_click" data-where="contacts">{e(S['phone'])}</a> · <a href="mailto:{S['email']}">{e(S['email'])}</a></p>
-      <div class="btn-row">{btn_wa(where="contacts")}{btn_call(where="contacts")}</div>
+      <div class="btn-row">{btn_wa(where="contacts")}{btn_call(where="contacts")}{btn_online("contacts")}</div>
       <p class="route-links"><a href="{gmaps}" target="_blank" rel="noopener" data-track="route_click" data-where="google_maps">Маршрут в Google Maps</a>
       <a href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis">Открыть в 2ГИС</a></p>
     </div>
@@ -338,7 +349,7 @@ def page_home():
     <p class="eyebrow">Массаж и SPA в Алматы · 24/7</p>
     <h1>Территория релакса в&nbsp;центре Алматы</h1>
     <p class="hero-text">Приватные кабинеты, сауна и {len(MASTERS)} мастеров. Классические и авторские массажи, SPA-программы с парением и пилингом. Работаем круглосуточно.</p>
-    <div class="btn-row">{btn_wa(where="hero")}{btn_call(S['phone'], where="hero", cls="btn btn-ghost")}</div>
+    <div class="btn-row">{btn_wa(where="hero")}{btn_call(S['phone'], where="hero", cls="btn btn-ghost")}{btn_online("hero")}</div>
     <ul class="facts">
       <li><strong>24/7</strong><span>без выходных</span></li>
       <li><strong>от {fmt(min(min_price(p) for p in PROGRAMS if p['group'] == 'massage'))}</strong><span>массаж</span></li>
@@ -410,7 +421,7 @@ def page_program(p):
       <h1>{e(p['title'])}</h1>
       <p class="lead">{e(p['lead'])}</p>
       <div class="price-card">{price_rows(p['prices'])}</div>
-      <div class="btn-row">{btn_wa(topic=p['title'], where="program")}{btn_call(where="program")}</div>
+      <div class="btn-row">{btn_wa(topic=p['title'], where="program")}{btn_call(where="program")}{btn_online("program")}</div>
       <p class="muted small">{e(S['promos'][0]['text'])} {e(S['promos'][1]['text'])} {e(S['promo_note'])}</p>
     </div>
     {img(pg, p['image'], p['title'], 'program-img', loading='eager', w=1080, h=610)}
@@ -442,7 +453,7 @@ def page_prices():
 <section class="page-head"><div class="wrap">
   <h1>Цены на массаж и SPA</h1>
   <p class="lead">Актуальные цены The Palm. Нажмите на программу, чтобы узнать подробнее.</p>
-  <div class="btn-row">{btn_wa(where="prices_top")}{btn_call(where="prices_top")}</div>
+  <div class="btn-row">{btn_wa(where="prices_top")}{btn_call(where="prices_top")}{btn_online("prices_top")}</div>
 </div></section>
 {promos_block()}
 <section class="section"><div class="wrap">{price_list(pg)}</div></section>

@@ -230,3 +230,9 @@ p { margin: 0 0 1em; }
   .btn-row .btn { flex: 1 1 100%; }
   .footer-grid { grid-template-columns: 1fr; }
 }
+
+/* Онлайн-запись Altegio: второстепенная ссылка рядом с WhatsApp */
+.btn-online { display: inline-flex; align-items: center; gap: .4em; align-self: center; font-size: .9rem; font-weight: 600; color: inherit; text-decoration: underline; text-underline-offset: 3px; opacity: .85; }
+.btn-online:hover { opacity: 1; }
+.btn-online svg { width: 1.1em; height: 1.1em; flex: none; }
+.hero .btn-online { color: #fff; }
