@@ -25,6 +25,11 @@ def load(name):
 S = load("settings.json")
 MASTERS = load("masters.json")["masters"]
 REVIEWS = load("reviews.json")
+
+# Версия стилей/скриптов: меняется при каждом изменении файлов, чтобы браузеры не держали старый кэш
+import hashlib as _hl
+ASSET_V = _hl.md5(b"".join(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", n), "rb").read()
+                          for n in ("style.css", "main.js"))).hexdigest()[:8]
 PROGRAMS_DATA = load("programs.json")
 PROGRAMS = PROGRAMS_DATA["programs"]
 ALTEGIO = {s["id"]: s for s in load("altegio-services.json")["services"]}
@@ -184,7 +189,7 @@ def layout(pg, title, description, body, image="reception.webp"):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{u('/assets/style.css')}">
+<link rel="stylesheet" href="{u('/assets/style.css')}?v={ASSET_V}">
 {jsonld()}
 {gtm_head}
 </head>
@@ -231,7 +236,7 @@ def layout(pg, title, description, body, image="reception.webp"):
   {btn_wa("WhatsApp", where="mobile_bar", cls="btn btn-primary")}
   {btn_call("Позвонить", where="mobile_bar", cls="btn btn-dark")}
 </div>
-<script src="{u('/assets/main.js')}" defer></script>
+<script src="{u('/assets/main.js')}?v={ASSET_V}" defer></script>
 </body>
 </html>
 """
