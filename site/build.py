@@ -243,10 +243,16 @@ def img(pg, name, alt, cls="", loading="lazy", w=None, h=None):
 
 
 def promos_block(only=None):
-    """Плашка акций. only — индексы акций для показа (на главной акции разнесены по странице)."""
+    """Карточки акций. only — индексы акций для показа (на главной акции разнесены по странице)."""
     promos = S["promos"] if only is None else [S["promos"][i] for i in only]
-    items = "".join(f'<div class="promo"><strong>{e(p["title"])}</strong><span>{e(p["text"])}</span></div>' for p in promos)
-    return f'<section class="promos"><div class="wrap promos-row">{items}<p class="promo-note">{e(S["promo_note"])}</p></div></section>'
+    cards = ""
+    for p in promos:
+        t = p["title"]
+        badge, rest = (t.split(" ", 1) + [""])[:2] if t.startswith(("−", "-")) and "%" in t.split(" ")[0] else ("%", t)
+        cards += (f'<div class="promo"><div class="promo-badge">{e(badge)}</div>'
+                  f'<div class="promo-body"><strong>{e(rest[:1].upper() + rest[1:])}</strong><span>{e(p["text"])}</span>'
+                  f'{btn_wa("Записаться со скидкой", topic=t, where="promo", cls="btn promo-btn")}</div></div>')
+    return f'<section class="promos"><div class="wrap promos-row">{cards}</div></section>'
 
 
 def reviews_block():
@@ -450,7 +456,7 @@ def page_program(p):
       <p class="lead">{e(p['lead'])}</p>
       <div class="price-card">{price_rows(p['prices'])}</div>
       <div class="btn-row">{btn_wa(topic=p['title'], where="program")}{btn_call(where="program")}</div>
-      <p class="muted small">{e(S['promos'][0]['text'])} {e(S['promos'][1]['text'])} {e(S['promo_note'])}</p>
+      <p class="muted small">{e(S['promos'][0]['text'])} {e(S['promos'][1]['text'])}</p>
     </div>
     {img(pg, p['image'], p['title'], 'program-img', loading='eager', w=1080, h=610)}
   </div>
