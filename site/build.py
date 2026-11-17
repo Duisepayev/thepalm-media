@@ -362,7 +362,7 @@ def contacts_block(pg, heading="Как нас найти"):
       <a href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis">Открыть в 2ГИС</a></p>
     </div>
     <a class="map map-static" href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis_map" aria-label="Открыть The Palm в 2ГИС">
-      {img(pg, 'map-2gis.webp', 'The Palm на карте 2ГИС: Аль-Фараби 41/7, ЖК Metropole', 'map-img', w=800, h=600)}
+      {img(pg, 'map-2gis-streets.webp', 'The Palm на карте 2ГИС: Аль-Фараби 41/7, ЖК Metropole', 'map-img', w=800, h=600)}
       <span class="map-pin-label">The Palm</span>
       <span class="map-cta">Открыть в 2ГИС →</span>
       <span class="map-copy">© 2ГИС</span>
