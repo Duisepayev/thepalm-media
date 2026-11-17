@@ -24,6 +24,7 @@ def load(name):
 
 S = load("settings.json")
 MASTERS = load("masters.json")["masters"]
+REVIEWS = load("reviews.json")
 PROGRAMS_DATA = load("programs.json")
 PROGRAMS = PROGRAMS_DATA["programs"]
 ALTEGIO = {s["id"]: s for s in load("altegio-services.json")["services"]}
@@ -241,9 +242,24 @@ def img(pg, name, alt, cls="", loading="lazy", w=None, h=None):
     return f'<img class="{cls}" src="{pg.url("/assets/img/" + name)}" alt="{e(alt)}" loading="{loading}"{size}>'
 
 
-def promos_block():
-    items = "".join(f'<div class="promo"><strong>{e(p["title"])}</strong><span>{e(p["text"])}</span></div>' for p in S["promos"])
+def promos_block(only=None):
+    """Плашка акций. only — индексы акций для показа (на главной акции разнесены по странице)."""
+    promos = S["promos"] if only is None else [S["promos"][i] for i in only]
+    items = "".join(f'<div class="promo"><strong>{e(p["title"])}</strong><span>{e(p["text"])}</span></div>' for p in promos)
     return f'<section class="promos"><div class="wrap promos-row">{items}<p class="promo-note">{e(S["promo_note"])}</p></div></section>'
+
+
+def reviews_block():
+    r = REVIEWS
+    items = "".join(f'<figure class="review"><div class="review-stars" aria-hidden="true">★★★★★</div>'
+                    f'<blockquote>«{e(x["text"])}»</blockquote>'
+                    f'<figcaption>{e(x["name"])} · <span>{e(x["date"])}</span></figcaption></figure>' for x in r["reviews"])
+    return f"""<section class="section" id="otzyvy">
+  <div class="wrap">
+    <div class="section-head"><h2 class="h2">Отзывы гостей</h2><a class="link" href="{e(r['url'])}" target="_blank" rel="noopener" data-track="reviews_click">{e(r['source'])}: ★ {e(r['rating'])} · {r['ratings_count']} оценок →</a></div>
+    <div class="reviews">{items}</div>
+  </div>
+</section>"""
 
 
 def program_card(pg, p):
@@ -333,7 +349,7 @@ def contacts_block(pg, heading="Как нас найти"):
       <p class="lead">{e(S['address'])}<br><span class="muted">{e(S['address_hint'])}</span></p>
       <p><strong>{e(S['hours'])}</strong></p>
       <p><a href="tel:{S['phone_href']}" data-track="phone_click" data-where="contacts">{e(S['phone'])}</a> · <a href="mailto:{S['email']}">{e(S['email'])}</a></p>
-      <div class="btn-row">{btn_wa(where="contacts")}{btn_call(where="contacts")}{btn_online("contacts")}</div>
+      <div class="btn-row">{btn_wa(where="contacts")}{btn_call(where="contacts")}</div>
       <p class="route-links"><a href="{gmaps}" target="_blank" rel="noopener" data-track="route_click" data-where="google_maps">Маршрут в Google Maps</a>
       <a href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis">Открыть в 2ГИС</a></p>
     </div>
@@ -359,7 +375,7 @@ def page_home():
     <p class="eyebrow">Массаж и SPA в Алматы · 24/7</p>
     <h1>Территория релакса в&nbsp;центре Алматы</h1>
     <p class="hero-text">Приватные кабинеты, сауна и {len(MASTERS)} мастеров. Классические и авторские массажи, SPA-программы с парением и пилингом. Работаем круглосуточно.</p>
-    <div class="btn-row">{btn_wa(where="hero")}{btn_call(S['phone'], where="hero", cls="btn btn-ghost")}{btn_online("hero")}</div>
+    <div class="btn-row">{btn_wa(where="hero")}{btn_call(S['phone'], where="hero", cls="btn btn-ghost")}</div>
     <ul class="facts">
       <li><strong>24/7</strong><span>без выходных</span></li>
       <li><strong>от {fmt(min(min_price(p) for p in PROGRAMS if p['group'] == 'massage'))}</strong><span>массаж</span></li>
@@ -368,13 +384,14 @@ def page_home():
     </ul>
   </div>
 </section>
-{promos_block()}
+{promos_block([0])}
 <section class="section" id="mastera">
   <div class="wrap">
     <div class="section-head"><h2 class="h2">Наши мастера</h2><a class="link" href="{pg.url('/mastera/')}">Все мастера →</a></div>
     <div class="masters">{masters}</div>
   </div>
 </section>
+{promos_block([1])}
 <section class="section" id="massazh">
   <div class="wrap">
     <div class="section-head"><h2 class="h2">Популярные массажи</h2><a class="link" href="{pg.url('/programmy/')}">Все цены →</a></div>
@@ -406,6 +423,7 @@ def page_home():
     </div>
   </div>
 </section>
+{reviews_block()}
 {faq()}
 {contacts_block(pg)}
 """
@@ -431,7 +449,7 @@ def page_program(p):
       <h1>{e(p['title'])}</h1>
       <p class="lead">{e(p['lead'])}</p>
       <div class="price-card">{price_rows(p['prices'])}</div>
-      <div class="btn-row">{btn_wa(topic=p['title'], where="program")}{btn_call(where="program")}{btn_online("program")}</div>
+      <div class="btn-row">{btn_wa(topic=p['title'], where="program")}{btn_call(where="program")}</div>
       <p class="muted small">{e(S['promos'][0]['text'])} {e(S['promos'][1]['text'])} {e(S['promo_note'])}</p>
     </div>
     {img(pg, p['image'], p['title'], 'program-img', loading='eager', w=1080, h=610)}
@@ -463,7 +481,7 @@ def page_prices():
 <section class="page-head"><div class="wrap">
   <h1>Цены на массаж и SPA</h1>
   <p class="lead">Актуальные цены The Palm. Нажмите на программу, чтобы узнать подробнее.</p>
-  <div class="btn-row">{btn_wa(where="prices_top")}{btn_call(where="prices_top")}{btn_online("prices_top")}</div>
+  <div class="btn-row">{btn_wa(where="prices_top")}{btn_call(where="prices_top")}</div>
 </div></section>
 {promos_block()}
 <section class="section"><div class="wrap">{price_list(pg)}</div></section>
