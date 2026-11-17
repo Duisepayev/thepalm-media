@@ -1,4 +1,4 @@
-// Меню на телефоне и события для Google Tag Manager (клики WhatsApp, звонок, маршрут).
+// Меню на телефоне и события для Google Tag Manager и Яндекс Метрики (клики WhatsApp, звонок, маршрут).
 (function () {
   var burger = document.querySelector(".burger");
   var nav = document.getElementById("nav");
@@ -22,5 +22,7 @@
       cta_topic: a.getAttribute("data-topic") || "",
       page_path: location.pathname
     });
+    // Цели Яндекс Метрики: whatsapp_click, phone_click, online_booking_click
+    if (window.ym && window.YM_ID) window.ym(window.YM_ID, "reachGoal", a.getAttribute("data-track"));
   });
 })();

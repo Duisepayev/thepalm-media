@@ -149,6 +149,16 @@ def layout(pg, title, description, body, image="reception.webp"):
                     f"(window,document,'script','dataLayer','{gtm}');</script>")
         gtm_body = (f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={gtm}" height="0" width="0" '
                     f'style="display:none;visibility:hidden"></iframe></noscript>')
+    ym = S.get("ym_id")
+    if ym and not PREVIEW:
+        gtm_head += (f'<script>(function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};'
+                     f'm[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){{if(document.scripts[j].src===r){{return;}}}}'
+                     f'k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})'
+                     f'(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");'
+                     f'ym({ym},"init",{{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true}});'
+                     f'window.YM_ID={ym};</script>')
+        gtm_body += (f'<noscript><div><img src="https://mc.yandex.ru/watch/{ym}" '
+                     f'style="position:absolute;left:-9999px" alt=""></div></noscript>')
     u = pg.url
     nav = [("/programmy/", "Цены"), ("/#massazh", "Массаж"), ("/#spa", "SPA"), ("/mastera/", "Мастера"), ("/contact/", "Контакты")]
     nav_html = "".join(

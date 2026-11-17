@@ -4,7 +4,7 @@
 
 ## Как устроено
 
-- `data/settings.json` — телефон, WhatsApp, адрес, акции, GTM.
+- `data/settings.json` — телефон, WhatsApp, адрес, акции, GTM, Яндекс Метрика (`ym_id`, цели whatsapp_click, phone_click, online_booking_click).
 - `data/altegio-services.json` — снимок услуг и цен из Altegio (location 1352802). Цены на сайте берутся только отсюда по `altegio_id`.
 - `data/programs.json` — страницы программ: тексты, картинки, какие услуги Altegio показывать, старые адреса для переадресации.
 - `data/masters.json` — мастера, которые работают (сверять с Altegio).
