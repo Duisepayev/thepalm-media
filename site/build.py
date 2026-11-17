@@ -350,8 +350,6 @@ def contacts_block(pg, heading="Как нас найти"):
     lat, lon = S["geo"]["lat"], S["geo"]["lon"]
     gmaps = f"https://www.google.com/maps/dir/?api=1&destination={lat},{lon}"
     gis = f"https://2gis.kz/almaty/firm/{S['twogis_firm_id']}"
-    # Встроенная карта Google: виджет 2ГИС на iPhone часто остаётся пустым
-    map_src = f"https://maps.google.com/maps?q={lat},{lon}&z=16&hl=ru&output=embed"
     return f"""<section class="section contacts" id="kontakty">
   <div class="wrap contacts-grid">
     <div>
@@ -363,7 +361,12 @@ def contacts_block(pg, heading="Как нас найти"):
       <p class="route-links"><a href="{gmaps}" target="_blank" rel="noopener" data-track="route_click" data-where="google_maps">Маршрут в Google Maps</a>
       <a href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis">Открыть в 2ГИС</a></p>
     </div>
-    <div class="map"><iframe title="The Palm на карте" loading="lazy" src="{e(map_src)}" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+    <a class="map map-static" href="{gis}" target="_blank" rel="noopener" data-track="route_click" data-where="2gis_map" aria-label="Открыть The Palm в 2ГИС">
+      {img(pg, 'map-2gis.webp', 'The Palm на карте 2ГИС: Аль-Фараби 41/7, ЖК Metropole', 'map-img', w=800, h=600)}
+      <span class="map-pin-label">The Palm</span>
+      <span class="map-cta">Открыть в 2ГИС →</span>
+      <span class="map-copy">© 2ГИС</span>
+    </a>
   </div>
 </section>"""
 
